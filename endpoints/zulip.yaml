@@ -1,4 +1,4 @@
-path: "/webhook"
+path: "/"
 method: "POST"
 extra:
   python:

@@ -1,4 +1,6 @@
-from endpoints.zulip import ZulipEndpoint
+from dify_plugin import Plugin, DifyPluginEnv
 
-# Eksportuj endpoint do użytku przez Dify
-__all__ = ['ZulipEndpoint'] 
+plugin = Plugin(DifyPluginEnv())
+
+if __name__ == '__main__':
+    plugin.run() 
