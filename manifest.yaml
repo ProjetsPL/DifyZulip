@@ -1,0 +1,39 @@
+version: 0.0.1
+type: plugin
+author: ProjetsPL
+name: zulip
+label:
+  en_US: Zulip Bot
+  zh_Hans: Zulip 机器人
+  pt_BR: Bot do Zulip
+  ja_JP: Zulip ボット
+description:
+  en_US: Connect your Dify app with Zulip to enable AI-powered conversations in your organization
+  zh_Hans: 将您的 Dify 应用与 Zulip 连接，在您的组织中启用 AI 驱动的对话
+  pt_BR: Conecte seu aplicativo Dify com o Zulip para permitir conversas alimentadas por IA em sua organização
+  ja_JP: DifyアプリをZulipに接続して、組織内でAI駆動の会話を可能にします
+created_at: "2025-01-29T15:00:00.000000+01:00"
+icon: icon.svg
+resource:
+  memory: 268435456
+  permission:
+    endpoint:
+      enabled: true
+    app:
+      enabled: true
+tags:
+  - social
+  - communication
+  - bot
+plugins:
+  endpoints:
+    - "group/zulip.yaml"
+meta:
+  version: 0.0.1
+  arch:
+    - "amd64"
+    - "arm64"
+  runner:
+    language: python
+    version: "3.12"
+    entrypoint: main 

@@ -1,0 +1,131 @@
+settings:
+  - name: zulip_site_url
+    type: text-input
+    required: true
+    label:
+      en_US: Zulip Site URL
+      zh_Hans: Zulip 站点 URL
+      pt_BR: URL do Site Zulip
+      ja_JP: Zulip サイト URL
+      pl_PL: URL strony Zulip
+    placeholder:
+      en_US: https://your-organization.zulipchat.com
+      zh_Hans: https://your-organization.zulipchat.com
+      pt_BR: https://your-organization.zulipchat.com
+      ja_JP: https://your-organization.zulipchat.com
+      pl_PL: https://your-organization.zulipchat.com
+    help:
+      en_US: The URL of your self-hosted Zulip instance
+      zh_Hans: 您自托管 Zulip 实例的 URL
+      pt_BR: A URL da sua instância Zulip auto-hospedada
+      ja_JP: セルフホスト Zulip インスタンスの URL
+      pl_PL: URL Twojej instancji Zulip
+
+  - name: bot_email
+    type: text-input
+    required: true
+    label:
+      en_US: Bot Email
+      zh_Hans: 机器人邮箱
+      pt_BR: Email do Bot
+      ja_JP: ボットのメール
+      pl_PL: Email bota
+    placeholder:
+      en_US: dify-bot@your-organization.zulipchat.com
+      zh_Hans: dify-bot@your-organization.zulipchat.com
+      pt_BR: dify-bot@your-organization.zulipchat.com
+      ja_JP: dify-bot@your-organization.zulipchat.com
+      pl_PL: dify-bot@your-organization.zulipchat.com
+    help:
+      en_US: The email address of your Zulip bot
+      zh_Hans: 您的 Zulip 机器人的邮箱地址
+      pt_BR: O endereço de email do seu bot Zulip
+      ja_JP: Zulip ボットのメールアドレス
+      pl_PL: Adres email Twojego bota Zulip
+
+  - name: bot_api_key
+    type: secret-input
+    required: true
+    label:
+      en_US: Bot API Key
+      zh_Hans: 机器人 API 密钥
+      pt_BR: Chave de API do Bot
+      ja_JP: ボット API キー
+      pl_PL: Klucz API bota
+    placeholder:
+      en_US: Your bot's API key from Zulip
+      zh_Hans: 来自 Zulip 的机器人 API 密钥
+      pt_BR: Sua chave de API do bot do Zulip
+      ja_JP: Zulip からのボットの API キー
+      pl_PL: Klucz API bota z Zulip
+    help:
+      en_US: The API key for your Zulip bot (found in bot settings)
+      zh_Hans: 您的 Zulip 机器人的 API 密钥（在机器人设置中找到）
+      pt_BR: A chave de API para seu bot Zulip (encontrada nas configurações do bot)
+      ja_JP: Zulip ボットの API キー (ボット設定で確認可能)
+      pl_PL: Klucz API dla Twojego bota Zulip (znajduje się w ustawieniach bota)
+
+  - name: app
+    type: app-selector
+    scope: chat
+    required: true
+    label:
+      en_US: Dify App
+      zh_Hans: Dify 应用
+      pt_BR: Aplicativo Dify
+      ja_JP: Dify アプリ
+      pl_PL: Aplikacja Dify
+    placeholder:
+      en_US: Select the Dify app to handle Zulip messages
+      zh_Hans: 选择处理 Zulip 消息的 Dify 应用
+      pt_BR: Selecione o aplicativo Dify para lidar com mensagens do Zulip
+      ja_JP: Zulip メッセージを処理する Dify アプリを選択
+      pl_PL: Wybierz aplikację Dify do obsługi wiadomości z Zulip
+    help:
+      en_US: The Dify application that will process and respond to Zulip messages
+      zh_Hans: 将处理和响应 Zulip 消息的 Dify 应用程序
+      pt_BR: O aplicativo Dify que processará e responderá às mensagens do Zulip
+      ja_JP: Zulip メッセージを処理して応答する Dify アプリケーション
+      pl_PL: Aplikacja Dify, która będzie przetwarzać i odpowiadać na wiadomości z Zulip
+
+  - name: respond_to_mentions_only
+    type: boolean
+    required: false
+    default: true
+    label:
+      en_US: Respond to Mentions Only
+      zh_Hans: 仅回复提及
+      pt_BR: Responder Apenas a Menções
+      ja_JP: メンションのみに応答
+      pl_PL: Odpowiadaj tylko na wzmianki
+    help:
+      en_US: If enabled, bot will only respond when mentioned. If disabled, bot will respond to all messages in configured streams
+      zh_Hans: 如果启用，机器人将仅在被提及时回复。如果禁用，机器人将回复配置流中的所有消息
+      pt_BR: Se habilitado, o bot responderá apenas quando mencionado. Se desabilitado, o bot responderá a todas as mensagens nos streams configurados
+      ja_JP: 有効にすると、ボットはメンションされた時のみ応答します。無効にすると、設定されたストリームのすべてのメッセージに応答します
+      pl_PL: Jeśli włączone, bot będzie odpowiadać tylko na wzmianki. Jeśli wyłączone, bot będzie odpowiadać na wszystkie wiadomości w skonfigurowanych strumieniach
+
+  - name: allowed_streams
+    type: text-input
+    required: false
+    label:
+      en_US: Allowed Streams (comma-separated)
+      zh_Hans: 允许的流（逗号分隔）
+      pt_BR: Streams Permitidos (separados por vírgula)
+      ja_JP: 許可されたストリーム (カンマ区切り)
+      pl_PL: Dozwolone strumienie (oddzielone przecinkami)
+    placeholder:
+      en_US: general,support,ai-chat
+      zh_Hans: general,support,ai-chat
+      pt_BR: general,support,ai-chat
+      ja_JP: general,support,ai-chat
+      pl_PL: general,support,ai-chat
+    help:
+      en_US: Comma-separated list of stream names where bot should respond. Leave empty to respond in all streams
+      zh_Hans: 机器人应响应的流名称的逗号分隔列表。留空以在所有流中响应
+      pt_BR: Lista separada por vírgulas de nomes de streams onde o bot deve responder. Deixe vazio para responder em todos os streams
+      ja_JP: ボットが応答すべきストリーム名のカンマ区切りリスト。すべてのストリームで応答する場合は空にしてください
+      pl_PL: Lista nazw strumieni oddzielonych przecinkami, w których bot powinien odpowiadać. Pozostaw puste, aby odpowiadać we wszystkich strumieniach
+
+endpoints:
+  - endpoints/zulip.yaml 
