@@ -1,0 +1,7 @@
+path: "/"
+method: "POST"
+settings:
+  - group/zulip.yaml
+extra:
+  python:
+    source: "endpoints/zulip.py" 

@@ -1,111 +1,175 @@
-# Zulip Plugin dla Dify
+# Zulip Bot dla Dify
 
 **Autor:** bartlomiejmatlega  
 **Wersja:** 0.0.1  
-**Typ:** tool  
+**Typ:** extension
 
 ## Opis
 
-Wtyczka Zulip dla Dify umożliwia integrację z platformą czatu Zulip. Pozwala na wysyłanie i odbieranie wiadomości z Zulip bezpośrednio z Chatflow/Chatbot/Agent w Dify.
+Zulip Bot umożliwia integrację z platformą czatu Zulip jako bot, który:
+- Odbiera wiadomości z Zulip jako wejście do Chatflow/Chatbot/Agent w Dify
+- Wysyła odpowiedzi z powrotem do Zulip
+- Obsługuje wiadomości prywatne i wzmianki w kanałach
 
-## Funkcjonalności
+**Architektura**: Plugin używa dwóch botów w Zulip:
+1. **Generic bot** - do wysyłania odpowiedzi z Dify do Zulip (API)
+2. **Outgoing webhook bot** - do odbierania wiadomości z Zulip przez Dify (webhook)
 
-### 📤 Wysyłanie Wiadomości (`send_message`)
-- Wysyłanie wiadomości do strumieni (kanałów) Zulip
-- Wysyłanie wiadomości bezpośrednich do użytkowników
-- Obsługa tematów w wiadomościach do strumieni
-- Obsługa wielu odbiorców w wiadomościach prywatnych
+## Instrukcja Konfiguracji
 
-### 📥 Odbieranie Wiadomości (`get_messages`)
-- Pobieranie wiadomości ze strumieni lub rozmów prywatnych
-- Filtrowanie według typu wiadomości (strumień/prywatne/wszystkie)
-- Filtrowanie według konkretnego strumienia i tematu
-- Ograniczenie liczby wiadomości (1-100)
-- Filtrowanie według czasu (ostatnie N godzin)
+### 1. Utworzenie Bota w Zulip
 
-## Wymagania
+1. **Zaloguj się do swojego serwera Zulip**
+   - Przejdź do **Settings** → **Personal settings** → **Bots**
+   - Kliknij **Add a new bot**
 
-- Python 3.8+
-- Konto Zulip z dostępem do API
-- Klucz API Zulip
+2. **Utwórz zwykłego bota (do API)**
+   - Wybierz **Generic bot** jako typ bota
+   - Wprowadź nazwę bota (np. "Dify Assistant API")
+   - Opcjonalnie dodaj avatar i opis
+   - Kliknij **Create bot**
 
-## Instalacja
+3. **Pobierz dane uwierzytelniania**
+   - Skopiuj **Email address** bota (np. `dify-bot@your-org.zulipchat.com`)
+   - Skopiuj **API key** bota
+   - Zanotuj **Server URL** (np. `https://your-org.zulipchat.com`)
 
-1. Sklonuj repozytorium:
-```bash
-git clone [url-repozytorium]
-cd dify-zulip
-```
+### 2. Konfiguracja Endpoint w Dify
 
-2. Utwórz środowisko wirtualne:
-```bash
-python3 -m venv venv
-source venv/bin/activate  # Na Windows: venv\Scripts\activate
-```
+1. **Utwórz nowy endpoint**
+   - W Dify przejdź do sekcji Plugins
+   - Zainstaluj plugin Zulip Bot
+   - Utwórz nowy endpoint z niestandardową nazwą
 
-3. Zainstaluj zależności:
-```bash
-pip install -r requirements.txt
-```
+2. **Wprowadź dane konfiguracyjne**
+   - **Zulip Server URL**: URL twojego serwera Zulip
+   - **Bot Email**: Adres email bota z kroku 1
+   - **Bot API Key**: Klucz API bota z kroku 1
+   - **Allow Retry**: Ustaw na false (zalecane)
+   - **App**: Wybierz aplikację Dify do obsługi wiadomości
 
-## Konfiguracja
+3. **Zapisz i skopiuj URL endpoint**
+   - Zapisz konfigurację
+   - Skopiuj wygenerowany URL endpoint
 
-### Uzyskanie Klucza API Zulip
+### 3. Konfiguracja Outgoing Webhook w Zulip
 
-1. Zaloguj się do swojego serwera Zulip
-2. Przejdź do **Settings** → **Account & privacy** 
-3. W sekcji **API key** kliknij **Generate new API key**
-4. Skopiuj wygenerowany klucz
+**Uwaga**: Lokalizacja opcji może się różnić w zależności od wersji Zulip i języka interfejsu. W polskiej wersji może być **Ustawienia** → **Organizacja** → **Boty**.
 
-### Parametry Uwierzytelniania
+#### Metoda A: Konfiguracja outgoing webhook (zalecana)
 
-W Dify skonfiguruj następujące parametry:
+**Uwaga**: Teraz utworzymy drugi bot - tym razem **Outgoing webhook bot** (inny niż Generic bot z kroku 1). Ten bot będzie **wysyłać** wiadomości **z** Zulip **do** naszego endpoint.
 
-- **Zulip Server URL**: URL twojego serwera Zulip (np. `https://your-organization.zulipchat.com`)
-- **Email**: Twój adres email użyty w Zulip
-- **API Key**: Klucz API wygenerowany w Zulip
+1. **Utwórz outgoing webhook bot**
+   - W Zulip przejdź do **Settings** → **Organization** → **Bots**
+   - Przewiń do sekcji **Add a new bot**
+   - Wybierz **Outgoing webhook** jako typ bota (nie Generic!)
 
-## Użytkowanie
+2. **Skonfiguruj outgoing webhook bot**
+   - **Bot name**: Nazwa bota (np. "Dify Assistant Webhook")
+   - **Endpoint URL**: Wklej URL endpoint z Dify
+   - **Interface**: Wybierz **Generic** (format danych Zulip)
+   - **Triggers**: Wybierz kiedy webhook ma się uruchamiać:
+     - `@mention` - gdy ktoś wspomni bota
+     - `direct_message` - dla wiadomości prywatnych do bota
+   - Kliknij **Create bot**
 
-### Wysyłanie Wiadomości do Strumienia
+#### Metoda B: Użycie integracji JSON webhook (alternatywna)
 
-```
-Typ wiadomości: stream
-Nazwa strumienia: general
-Temat: API Test
-Treść: Cześć! To jest wiadomość testowa z Dify.
-```
+1. **Znajdź integrację JSON**
+   - W Zulip przejdź do **Settings** → **Organization** → **Integrations**
+   - Znajdź **JSON** w sekcji webhooks lub wyszukaj "JSON"
+   - Kliknij **Configure**
 
-### Wysyłanie Wiadomości Prywatnej
+2. **Skonfiguruj JSON webhook**
+   - **URL**: Wklej URL endpoint z Dify
+   - **Stream**: Wybierz strumień do monitorowania (opcjonalne)
+   - **Bot name**: Nazwa wyświetlana dla wiadomości (opcjonalne)
 
-```
-Typ wiadomości: private
-Odbiorcy: user1@example.com,user2@example.com
-Treść: Prywatna wiadomość od bota.
-```
+### 4. Testowanie
 
-### Pobieranie Wiadomości
+1. **Dodaj outgoing webhook bota do strumienia/kanału**
+   - Przejdź do wybranego strumienia w Zulip
+   - Kliknij ikonę koła zębatego → **Add members**
+   - Dodaj utworzonego **outgoing webhook bota** (nie generic bota!)
 
-```
-Typ wiadomości: stream
-Nazwa strumienia: general
-Temat: API Test (opcjonalnie)
-Limit: 10
-Godzin wstecz: 24
-```
+2. **Testuj interakcję**
+   - **Wzmianka w strumieniu**: Napisz `@nazwa_webhook_bota Cześć!`
+   - **Wiadomość prywatna**: Wyślij bezpośrednią wiadomość do **outgoing webhook bota**
+   - Bot powinien odpowiedzieć używając aplikacji Dify
+
+## Obsługiwane Funkcje
+
+### 📥 Odbieranie Wiadomości
+- Wiadomości prywatne do bota
+- Wzmianki bota w kanałach publicznych (`@bot_name`)
+- Automatyczne czyszczenie wzmianek z treści wiadomości
+- Obsługa formatowania Markdown z Zulip
+
+### 📤 Wysyłanie Odpowiedzi
+- Odpowiedzi na wiadomości prywatne (jako wiadomość prywatna)
+- Odpowiedzi w strumieniach (w tym samym temacie)
+- Obsługa błędów z graceful fallback
+- Użycie formatowania Zulip (emoji, Markdown)
+
+### 🔄 Integracja z Dify
+- Przekazywanie wiadomości do wybranej aplikacji Dify
+- Obsługa trybu blocking dla natychmiastowych odpowiedzi
+- Konfigurowalne retry policy dla webhook
 
 ## Bezpieczeństwo
 
-- Klucz API jest bezpiecznie przechowywany w Dify jako secret
-- Wszystkie połączenia używają HTTPS
-- Walidacja credentials odbywa się przy każdej konfiguracji
+- API key bota przechowywany jako encrypted secret w Dify
+- Wszystkie połączenia przez HTTPS
+- Walidacja wiadomości i nadawców
+- Ochrona przed pętlami (bot nie odpowiada sam sobie)
+- Webhook endpoint chroni przed duplikowaniem wiadomości
 
-## Wsparcie
+## Rozwiązywanie Problemów
 
-W przypadku problemów sprawdź:
-1. Czy URL serwera Zulip jest prawidłowy
-2. Czy klucz API jest aktualny
-3. Czy masz odpowiednie uprawnienia w Zulip
+### Problemy z konfiguracją bota
+
+1. **Bot nie odpowiada na wzmianki**
+   - Sprawdź czy bot został dodany do strumienia
+   - Sprawdź trigger konfigurację w outgoing webhook
+   - Upewnij się że używasz `@nazwa_bota` (bez @-organization)
+
+2. **Bot nie odpowiada na wiadomości prywatne**
+   - Sprawdź czy outgoing webhook ma włączony trigger `private_message`
+   - Sprawdź czy bot ma odpowiednie uprawnienia
+
+### Problemy z webhook
+
+1. **Webhook nie dostarcza danych**
+   - Sprawdź czy URL endpoint jest dostępny z internetu
+   - Sprawdź logi webhook w **Organization settings** → **Bots** → **Active bots**
+   - Użyj narzędzi jak webhook.site do debugowania
+
+2. **Błędy formatowania danych**
+   - Sprawdź czy endpoint obsługuje `application/x-www-form-urlencoded`
+   - W ustawieniach bota sprawdź Interface (Generic vs Slack compatible)
+
+### Problemy z aplikacją Dify
+
+1. **Brak odpowiedzi od aplikacji**
+   - Sprawdź czy wybrana aplikacja jest aktywna
+   - Sprawdź czy aplikacja może przetwarzać zapytania tekstowe
+   - Sprawdź logi w Dify
+
+## Wymagania
+
+- **Zulip**: Serwer Zulip z uprawnieniami administratora organizacji
+- **Bot**: Możliwość tworzenia botów w organizacji
+- **Webhook**: Dostęp do konfiguracji outgoing webhooks
+- **Dify**: Instancja Dify z dostępem do internetu
+- **Aplikacja**: Aktywna aplikacja Dify (Chatflow/Chatbot/Agent)
+
+## Ograniczenia
+
+- Bot odpowiada tylko na bezpośrednie wzmianki i wiadomości prywatne
+- Wymaga konfiguracji outgoing webhook w Zulip
+- Endpoint musi być dostępny publicznie z internetu
+- Obsługuje tylko wiadomości tekstowe (brak wsparcia dla załączników)
 
 ## Licencja
 

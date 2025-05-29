@@ -1,0 +1,64 @@
+settings:
+  - name: zulip_server_url
+    type: text-input
+    required: true
+    label:
+      en_US: Zulip Server URL
+      pl_PL: URL Serwera Zulip
+      zh_Hans: Zulip服务器URL
+      pt_BR: URL do Servidor Zulip
+    placeholder:
+      en_US: https://your-organization.zulipchat.com
+      pl_PL: https://twoja-organizacja.zulipchat.com
+      zh_Hans: https://your-organization.zulipchat.com
+      pt_BR: https://sua-organizacao.zulipchat.com
+  - name: zulip_email
+    type: text-input
+    required: true
+    label:
+      en_US: Bot Email
+      pl_PL: Email Bota
+      zh_Hans: 机器人邮箱
+      pt_BR: Email do Bot
+    placeholder:
+      en_US: bot@your-organization.zulipchat.com
+      pl_PL: bot@twoja-organizacja.zulipchat.com
+      zh_Hans: bot@your-organization.zulipchat.com
+      pt_BR: bot@sua-organizacao.zulipchat.com
+  - name: zulip_api_key
+    type: secret-input
+    required: true
+    label:
+      en_US: Bot API Key
+      pl_PL: Klucz API Bota
+      zh_Hans: 机器人API密钥
+      pt_BR: Chave API do Bot
+    placeholder:
+      en_US: Please input your Zulip Bot API Key
+      pl_PL: Proszę wprowadzić Klucz API Bota Zulip
+      zh_Hans: 请输入你的 Zulip Bot API 密钥
+      pt_BR: Por favor, insira sua Chave API do Bot Zulip
+  - name: allow_retry
+    type: boolean
+    required: false
+    label:
+      en_US: Allow Retry
+      pl_PL: Pozwól na Ponowienie
+      zh_Hans: 允许重试
+      pt_BR: Permitir Retentativas
+    default: false
+  - name: app
+    type: app-selector
+    required: true
+    label:
+      en_US: App
+      pl_PL: Aplikacja
+      zh_Hans: 应用
+      pt_BR: App
+    placeholder:
+      en_US: the app you want to use to answer Zulip messages
+      pl_PL: aplikacja którą chcesz użyć do odpowiadania na wiadomości Zulip
+      zh_Hans: 你想要用来回答 Zulip 消息的应用
+      pt_BR: o app que você deseja usar para responder mensagens do Zulip
+endpoints:
+  - endpoints/zulip.yaml 

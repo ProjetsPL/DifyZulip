@@ -17,7 +17,7 @@ resource:
   memory: 268435456
   permission:
     tool:
-      enabled: true
+      enabled: false
     model:
       enabled: false
       llm: false
@@ -29,14 +29,17 @@ resource:
     node:
       enabled: false
     endpoint:
-      enabled: false
+      enabled: true
     app:
-      enabled: false
+      enabled: true
     storage:
       enabled: false
+      size: 1048576
 plugins:
-  tools:
-    - provider/zulip.yaml
+  endpoints:
+    - endpoints/zulip.yaml
+  groups:
+    - group/zulip.yaml
 meta:
   version: 0.0.1
   arch:
