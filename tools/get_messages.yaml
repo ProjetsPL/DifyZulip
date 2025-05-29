@@ -1,0 +1,116 @@
+identity:
+  name: get_messages
+  author: bartlomiejmatlega
+  label:
+    en_US: Get Messages from Zulip
+    pl_PL: Pobierz Wiadomosci z Zulip
+    zh_Hans: 从Zulip获取消息
+    pt_BR: Obter Mensagens do Zulip
+description:
+  human:
+    en_US: Retrieve messages from Zulip streams or private conversations
+    pl_PL: Pobierz wiadomosci ze strumieni Zulip lub prywatnych rozmow
+    zh_Hans: 从Zulip流或私人对话中检索消息
+    pt_BR: Recuperar mensagens de streams Zulip ou conversas privadas
+  llm: Retrieve and read messages from Zulip. Use this tool to get recent messages from streams or private conversations.
+parameters:
+  - name: message_type
+    type: select
+    required: false
+    options:
+      - value: stream
+        label:
+          en_US: Stream Messages
+          pl_PL: Wiadomosci ze Strumienia
+          zh_Hans: 流消息
+          pt_BR: Mensagens de Stream
+      - value: private
+        label:
+          en_US: Private Messages
+          pl_PL: Wiadomosci Prywatne
+          zh_Hans: 私人消息
+          pt_BR: Mensagens Privadas
+      - value: all
+        label:
+          en_US: All Messages
+          pl_PL: Wszystkie Wiadomosci
+          zh_Hans: 所有消息
+          pt_BR: Todas as Mensagens
+    default: all
+    label:
+      en_US: Message Type
+      pl_PL: Typ Wiadomosci
+      zh_Hans: 消息类型
+      pt_BR: Tipo de Mensagem
+    human_description:
+      en_US: Type of messages to retrieve - stream, private or all messages
+      pl_PL: Typ wiadomosci do pobrania - ze strumienia, prywatne lub wszystkie
+      zh_Hans: 要检索的消息类型 - 流消息、私人消息或所有消息
+      pt_BR: Tipo de mensagens para recuperar - stream, privadas ou todas
+    llm_description: Filter messages by type - stream messages, private messages, or all messages
+    form: form
+  - name: stream_name
+    type: string
+    required: false
+    label:
+      en_US: Stream Name
+      pl_PL: Nazwa Strumienia
+      zh_Hans: 流名称
+      pt_BR: Nome do Stream
+    human_description:
+      en_US: Name of specific stream to get messages from (optional filter)
+      pl_PL: Nazwa konkretnego strumienia do pobrania wiadomosci (opcjonalny filtr)
+      zh_Hans: 要获取消息的特定流名称（可选过滤器）
+      pt_BR: Nome do stream especifico para obter mensagens (filtro opcional)
+    llm_description: Optional stream name to filter messages from a specific stream
+    form: llm
+  - name: topic
+    type: string
+    required: false
+    label:
+      en_US: Topic
+      pl_PL: Temat
+      zh_Hans: 主题
+      pt_BR: Topico
+    human_description:
+      en_US: Specific topic within a stream to filter messages (requires stream_name)
+      pl_PL: Konkretny temat w strumieniu do filtrowania wiadomosci (wymaga stream_name)
+      zh_Hans: 流中的特定主题来过滤消息（需要stream_name）
+      pt_BR: Topico especifico dentro de um stream para filtrar mensagens (requer stream_name)
+    llm_description: Filter messages by topic within a stream. Requires stream_name to be specified
+    form: llm
+  - name: limit
+    type: number
+    required: false
+    default: 20
+    label:
+      en_US: Message Limit
+      pl_PL: Limit Wiadomosci
+      zh_Hans: 消息限制
+      pt_BR: Limite de Mensagens
+    human_description:
+      en_US: Maximum number of messages to retrieve (1-100, default 20)
+      pl_PL: Maksymalna liczba wiadomosci do pobrania (1-100, domyslnie 20)
+      zh_Hans: 要检索的最大消息数（1-100，默认：20）
+      pt_BR: Numero maximo de mensagens para recuperar (1-100, padrao 20)
+    llm_description: Limit the number of messages to retrieve, between 1 and 100
+    form: llm
+  - name: hours_ago
+    type: number
+    required: false
+    default: 24
+    label:
+      en_US: Hours Ago
+      pl_PL: Godzin Wstecz
+      zh_Hans: 小时前
+      pt_BR: Horas Atras
+    human_description:
+      en_US: Get messages from the last N hours (default 24)
+      pl_PL: Pobierz wiadomosci z ostatnich N godzin (domyslnie 24)
+      zh_Hans: 获取最近N小时的消息（默认：24）
+      pt_BR: Obter mensagens das ultimas N horas (padrao 24)
+    llm_description: Time range in hours to look back for messages
+    form: llm
+extra:
+  python:
+    source: tools/get_messages.py 

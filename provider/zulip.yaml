@@ -1,0 +1,64 @@
+identity:
+  author: bartlomiejmatlega
+  name: zulip
+  label:
+    en_US: Zulip
+    pl_PL: Zulip
+    zh_Hans: Zulip
+    pt_BR: Zulip
+  description:
+    en_US: Connect to Zulip chat platform for sending and receiving messages
+    pl_PL: Połącz się z platformą czatu Zulip do wysyłania i odbierania wiadomości
+    zh_Hans: 连接到Zulip聊天平台发送和接收消息
+    pt_BR: Conecte-se à plataforma de chat Zulip para enviar e receber mensagens
+  icon: icon.svg
+supported_model_types: []
+configurate_methods:
+  - customizable-model
+provider_credential_schema:
+  credential_form_schemas:
+    - variable: zulip_server_url
+      label:
+        en_US: Zulip Server URL
+        pl_PL: URL Serwera Zulip
+        zh_Hans: Zulip服务器URL
+        pt_BR: URL do Servidor Zulip
+      type: text-input
+      required: true
+      placeholder:
+        en_US: https://your-organization.zulipchat.com
+        pl_PL: https://twoja-organizacja.zulipchat.com
+        zh_Hans: https://your-organization.zulipchat.com
+        pt_BR: https://sua-organizacao.zulipchat.com
+    - variable: zulip_email
+      label:
+        en_US: Email
+        pl_PL: Email
+        zh_Hans: 邮箱
+        pt_BR: Email
+      type: text-input
+      required: true
+      placeholder:
+        en_US: your-email@example.com
+        pl_PL: twoj-email@example.com
+        zh_Hans: your-email@example.com
+        pt_BR: seu-email@example.com
+    - variable: zulip_api_key
+      label:
+        en_US: API Key
+        pl_PL: Klucz API
+        zh_Hans: API密钥
+        pt_BR: Chave API
+      type: secret-input
+      required: true
+      placeholder:
+        en_US: Your Zulip API key
+        pl_PL: Twój klucz API Zulip
+        zh_Hans: 您的Zulip API密钥
+        pt_BR: Sua chave API Zulip
+tools:
+  - tools/send_message.yaml
+  - tools/get_messages.yaml
+extra:
+  python:
+    source: provider/zulip.py
